@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Lab4_2_SavinDA
@@ -7,7 +7,6 @@ namespace Lab4_2_SavinDA
     {
         static void Main(string[] args)
         {
-
             Console.WriteLine("=== STACK VARIANT 5 ===");
             Console.WriteLine("Check bracket balance: (), [], {}");
             Console.WriteLine("Type 'exit' to quit\n");
@@ -17,44 +16,37 @@ namespace Lab4_2_SavinDA
                 Console.Write("Enter expression: ");
                 string input = Console.ReadLine();
 
-                if (input?.ToLower() == "exit") break;      // Выход из программы
-                if (string.IsNullOrWhiteSpace(input))       // Проверка на пустую строку
+                if (input?.ToLower() == "exit") break;
+                if (string.IsNullOrWhiteSpace(input))
                 {
                     Console.WriteLine("Empty string!\n");
                     continue;
                 }
 
-                // Проверка и вывод результата
                 Console.WriteLine(CheckBrackets(input) ? "CORRECT\n" : "INCORRECT\n");
             }
         }
 
-        /// Проверка правильности расстановки скобок с использованием стека
         static bool CheckBrackets(string expr)
         {
-            Stack<char> stack = new Stack<char>();  // Стек для открывающих скобок
+            Stack<char> stack = new Stack<char>();
 
-            foreach (char c in expr) //проход по каждому символу выражения
+            foreach (char c in expr)
             {
-                // Открывающие скобки -> помещаем в стек
                 if (c == '(' || c == '[' || c == '{')
                     stack.Push(c);
-
-                // Закрывающие скобки -> проверяем соответствие
                 else if (c == ')' || c == ']' || c == '}')
                 {
-                    if (stack.Count == 0) return false;  // Проверка, что стек не пуст
+                    if (stack.Count == 0) return false;
 
-                    char open = stack.Pop();  // Извлекаем последнюю открывающую скобку
+                    char open = stack.Pop();
 
-                    // Проверка соответствия типов скобок
                     if (c == ')' && open != '(') return false;
                     if (c == ']' && open != '[') return false;
                     if (c == '}' && open != '{') return false;
                 }
             }
 
-            // Стек должен быть пустым - все скобки закрыты
             return stack.Count == 0;
         }
     }
