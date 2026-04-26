@@ -1,90 +1,84 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace SimpleAlgorithmsApp
 {
-    // Класс узла
     public class Node<T>
     {
         public Node(T data)
         {
-            Data = data; //сохр данные в узле
+            Data = data;
         }
         public T Data { get; set; }
         public Node<T> Next { get; set; }
     }
 
-    // Односвязный список
-    public class LList<T> : IEnumerable<T> //для возможности использ foreach
+    public class LList<T> : IEnumerable<T>
     {
-        Node<T> head; // головной/первый элемент
-        Node<T> tail; // последний/хвостовой элемент
-        int count;    // количество элементов в списке
+        Node<T> head;
+        Node<T> tail;
+        int count;
 
-        // Добавление элемента в конец
-        public void Add(T data) //слож О(1) - мгновенно
+        public void Add(T data)
         {
-            Node<T> node = new Node<T>(data); //узел с перед данными
-            if (head == null) //проверка пустой ли список
+            Node<T> node = new Node<T>(data);
+            if (head == null)
                 head = node;
             else
-                tail.Next = node; //если не пуст, тек ласт эл должен указ на новй узел
-            tail = node; //нью узел стан ласт
+                tail.Next = node;
+            tail = node;
             count++;
         }
 
-        // Добавление в начало
         public void AppendFirst(T data)
         {
-            Node<T> node = new Node<T>(data); //созд нью узла
+            Node<T> node = new Node<T>(data);
             node.Next = head;
             head = node;
-            if (count == 0) //если список пуст, то нью узел также явл и хвостом
+            if (count == 0)
                 tail = head;
-            count++; //счёт увел
+            count++;
         }
 
-        // Добавление в определенную позицию
-        public void AddAt(int index, T data) // О(n) - нужно пройти до нуж позиции
+        public void AddAt(int index, T data)
         {
-            if (index < 0 || index > count) //индекс не мб отриц или больше списка
+            if (index < 0 || index > count)
                 throw new ArgumentOutOfRangeException("index");
 
-            if (index == 0) //если встав в начало
+            if (index == 0)
             {
                 AppendFirst(data);
                 return;
             }
 
-            if (index == count) //если встав в конец
+            if (index == count)
             {
                 Add(data);
                 return;
             }
 
-            Node<T> newNode = new Node<T>(data); //если встав в середину списка
+            Node<T> newNode = new Node<T>(data);
             Node<T> current = head;
             for (int i = 0; i < index - 1; i++)
                 current = current.Next;
 
             newNode.Next = current.Next;
-            current.Next = newNode; //пред ущел теперь указ на новый
+            current.Next = newNode;
             count++;
         }
 
-        // Удаление по значению
-        public bool Remove(T data) //О(n) - нужно найти элемент
+        public bool Remove(T data)
         {
             if (head == null)
                 return false;
 
-            Node<T> current = head; //нач с головы
-            Node<T> previous = null; //пред узел
+            Node<T> current = head;
+            Node<T> previous = null;
 
-            while (current != null) //проход по списку
+            while (current != null)
             {
-                if (current.Data.Equals(data)) //срав с искомым
+                if (current.Data.Equals(data))
                 {
                     if (previous != null)
                     {
@@ -107,8 +101,7 @@ namespace SimpleAlgorithmsApp
             return false;
         }
 
-        // Удаление по номеру
-        public bool RemoveAt(int index) //О(n)
+        public bool RemoveAt(int index)
         {
             if (head == null)
                 return false;
@@ -137,7 +130,6 @@ namespace SimpleAlgorithmsApp
             return true;
         }
 
-        // Очистка списка
         public void Clear()
         {
             head = null;
@@ -145,7 +137,6 @@ namespace SimpleAlgorithmsApp
             count = 0;
         }
 
-        // Поиск номера элемента по значению
         public int IndexOf(T data)
         {
             if (head == null)
@@ -163,7 +154,6 @@ namespace SimpleAlgorithmsApp
             return -1;
         }
 
-        // Проверка наличия элемента
         public bool Contains(T data)
         {
             Node<T> current = head;
@@ -176,11 +166,9 @@ namespace SimpleAlgorithmsApp
             return false;
         }
 
-        // Свойства
         public int Count { get { return count; } }
         public bool IsEmpty { get { return count == 0; } }
 
-        // Просмотр списка
         public void Print()
         {
             if (head == null)
@@ -198,7 +186,6 @@ namespace SimpleAlgorithmsApp
             Console.WriteLine();
         }
 
-        // Реализация интерфейса IEnumerable
         IEnumerator IEnumerable.GetEnumerator()
         {
             return ((IEnumerable)this).GetEnumerator();
@@ -215,16 +202,13 @@ namespace SimpleAlgorithmsApp
         }
     }
 
-    // Главная программа
     class Program
     {
         static void Main(string[] args)
         {
-            // Из массива символов строим список
             char[] chars = { 'A', 'B', 'C', 'D' };
             LList<char> list = new LList<char>();
 
-            // Заполнение из массива
             foreach (char c in chars)
                 list.Add(c);
 
