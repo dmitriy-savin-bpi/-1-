@@ -1,101 +1,96 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace DoublyLinkedListApp
 {
-    // УЗЕЛ ДВУНАПРАВЛЕННОГО СПИСКА
     public class DoublyNode<T>
     {
         public DoublyNode(T data)
         {
             Data = data;
-            Next = null; //при созд никуда не указывает
-            Previous = null; //при созд ниоткуда не указ
+            Next = null;
+            Previous = null;
         }
 
         public T Data { get; set; }
-        public DoublyNode<T> Next { get; set; }      // ссылка вперёд узел
-        public DoublyNode<T> Previous { get; set; }  // ссылка назад узел
+        public DoublyNode<T> Next { get; set; }
+        public DoublyNode<T> Previous { get; set; }
     }
 
-    // ДВУНАПРАВЛЕННЫЙ СПИСОК (СОБСТВЕННЫЙ КЛАСС)
     public class DoublyLinkedList<T> : IEnumerable<T>
     {
-        private DoublyNode<T> head;   // первый элемент
-        private DoublyNode<T> tail;   // последний элемент
-        private int count;            // количество элементов
+        private DoublyNode<T> head;
+        private DoublyNode<T> tail;
+        private int count;
 
         public int Count { get { return count; } }
         public DoublyNode<T> First { get { return head; } }
         public DoublyNode<T> Last { get { return tail; } }
 
-        // 1. ДОБАВЛЕНИЕ В КОНЕЦ
         public void AddLast(T data)
         {
             DoublyNode<T> newNode = new DoublyNode<T>(data);
 
-            if (head == null) //если список пуст
-            {
-                head = newNode; //новый вагон станов головой
-                tail = newNode; //хвостом
-            }
-            else //если список не пуст
-            {
-                newNode.Previous = tail;   // новый ← хвост
-                tail.Next = newNode;       // хвост → новый
-                tail = newNode;            // новый стал хвостом
-            }
-            count++;
-        }
-
-        // 2. ДОБАВЛЕНИЕ В НАЧАЛО
-        public void AddFirst(T data)
-        {
-            DoublyNode<T> newNode = new DoublyNode<T>(data);
-
-            if (head == null) //если список пуст
+            if (head == null)
             {
                 head = newNode;
                 tail = newNode;
             }
             else
             {
-                newNode.Next = head;       // новый → голова
-                head.Previous = newNode;   // голова ← новый
-                head = newNode;            // новый стал головой
+                newNode.Previous = tail;
+                tail.Next = newNode;
+                tail = newNode;
             }
             count++;
         }
 
-        // 3. УДАЛЕНИЕ ПО ЗНАЧЕНИЮ
+        public void AddFirst(T data)
+        {
+            DoublyNode<T> newNode = new DoublyNode<T>(data);
+
+            if (head == null)
+            {
+                head = newNode;
+                tail = newNode;
+            }
+            else
+            {
+                newNode.Next = head;
+                head.Previous = newNode;
+                head = newNode;
+            }
+            count++;
+        }
+
         public bool Remove(T data)
         {
-            DoublyNode<T> current = head;//поиск сначала
+            DoublyNode<T> current = head;
 
-            while (current != null)//пока не дошёл до конца
+            while (current != null)
             {
-                if (current.Data.Equals(data)) //нашли нуж эл
+                if (current.Data.Equals(data))
                 {
-                    if (count == 1)                    // единственный элемент
+                    if (count == 1)
                     {
                         head = null;
                         tail = null;
                     }
-                    else if (current == head)          // удаляем голову
+                    else if (current == head)
                     {
                         head = head.Next;
                         head.Previous = null;
                     }
-                    else if (current == tail)          // удаляем хвост
+                    else if (current == tail)
                     {
                         tail = tail.Previous;
                         tail.Next = null;
                     }
-                    else                               // удаляем из середины
+                    else
                     {
-                        current.Previous.Next = current.Next;//указ на некст
-                        current.Next.Previous = current.Previous;//указ предыдущ
+                        current.Previous.Next = current.Next;
+                        current.Next.Previous = current.Previous;
                     }
                     count--;
                     return true;
@@ -105,7 +100,6 @@ namespace DoublyLinkedListApp
             return false;
         }
 
-        // 4. ОЧИСТКА СПИСКА
         public void Clear()
         {
             head = null;
@@ -113,10 +107,9 @@ namespace DoublyLinkedListApp
             count = 0;
         }
 
-        // 5. ПОИСК НОМЕРА ЭЛЕМЕНТА (возвращает индекс или -1)
         public int IndexOf(T data)
         {
-            DoublyNode<T> current = head; //нач с хэда
+            DoublyNode<T> current = head;
             int index = 0;
 
             while (current != null)
@@ -129,7 +122,6 @@ namespace DoublyLinkedListApp
             return -1;
         }
 
-        // ПРОСМОТР СПИСКА (ПРЯМОЙ ПОРЯДОК)
         public void PrintForward()
         {
             if (head == null)
@@ -143,13 +135,12 @@ namespace DoublyLinkedListApp
             while (current != null)
             {
                 Console.WriteLine($"   {num}. {current.Data}");
-                current = current.Next; // двиг вперёд
+                current = current.Next;
                 num++;
             }
             Console.WriteLine($"   Всего элементов: {count}");
         }
 
-        // ПРОСМОТР В ОБРАТНОМ ПОРЯДКЕ (для наглядности)
         public void PrintBackward()
         {
             if (tail == null)
@@ -163,12 +154,11 @@ namespace DoublyLinkedListApp
             while (current != null)
             {
                 Console.WriteLine($"   {num}. {current.Data}");
-                current = current.Previous; //двиг назад
+                current = current.Previous;
                 num--;
             }
         }
 
-        // для поддержки foreach
         IEnumerator IEnumerable.GetEnumerator()
         {
             return ((IEnumerable)this).GetEnumerator();
@@ -185,7 +175,6 @@ namespace DoublyLinkedListApp
         }
     }
 
-    // ГЛАВНАЯ ПРОГРАММА
     class Program
     {
         static void Main(string[] args)
@@ -196,7 +185,6 @@ namespace DoublyLinkedListApp
 
             DoublyLinkedList<string> list = new DoublyLinkedList<string>();
 
-            // ВВОД ПРЕДЛОЖЕНИЙ (вопросительные отменяют предыдущее)
             Console.WriteLine("\nВВОД ПРЕДЛОЖЕНИЙ (exit - закончить, ? - отмена):");
             Console.WriteLine("-".PadRight(70, '-'));
 
@@ -207,7 +195,6 @@ namespace DoublyLinkedListApp
 
                 if (input == "exit") break;
 
-                // если предложение заканчивается на "?" - отменяем последнее
                 if (input.Trim().EndsWith("?"))
                 {
                     if (list.Count > 0)
@@ -225,7 +212,6 @@ namespace DoublyLinkedListApp
                 }
             }
 
-            // ИНТЕРАКТИВНОЕ МЕНЮ
             bool exit = false;
             while (!exit)
             {
@@ -245,19 +231,19 @@ namespace DoublyLinkedListApp
 
                 switch (choice)
                 {
-                    case "1": // добавление в конец
+                    case "1":
                         Console.Write("Введите значение: ");
                         list.AddLast(Console.ReadLine());
                         Console.WriteLine("   [ДОБАВЛЕНО в конец]");
                         break;
 
-                    case "2": // добавление в начало
+                    case "2":
                         Console.Write("Введите значение: ");
                         list.AddFirst(Console.ReadLine());
                         Console.WriteLine("   [ДОБАВЛЕНО в начало]");
                         break;
 
-                    case "3": // удаление по значению
+                    case "3":
                         Console.Write("Введите значение для удаления: ");
                         string val = Console.ReadLine();
                         if (list.Remove(val))
@@ -266,12 +252,12 @@ namespace DoublyLinkedListApp
                             Console.WriteLine($"   [НЕ НАЙДЕНО] {val}");
                         break;
 
-                    case "4": // очистка списка
+                    case "4":
                         list.Clear();
                         Console.WriteLine("   [СПИСОК ОЧИЩЕН]");
                         break;
 
-                    case "5": // поиск номера элемента
+                    case "5":
                         Console.Write("Введите значение для поиска: ");
                         string search = Console.ReadLine();
                         int idx = list.IndexOf(search);
@@ -281,17 +267,17 @@ namespace DoublyLinkedListApp
                             Console.WriteLine($"   [НЕ НАЙДЕН] {search}");
                         break;
 
-                    case "6": // показать список (прямой порядок)
+                    case "6":
                         Console.WriteLine("\nСПИСОК (от начала):");
                         list.PrintForward();
                         break;
 
-                    case "7": // показать список (обратный порядок)
+                    case "7":
                         Console.WriteLine("\nСПИСОК (от конца):");
                         list.PrintBackward();
                         break;
 
-                    case "0": // выход
+                    case "0":
                         exit = true;
                         Console.WriteLine("   [ВЫХОД]");
                         break;
