@@ -28,7 +28,7 @@ namespace Part1_Task1
             return num;
         }
 
-        public static object interpol_met(int[] m, int key) // Интерполяционный ( О(1), О(log log n), О(n), память О(1) //Мгновенно не зависит от размера, либо растёт медленно почти как О(1), либо линейно растёт (увел в 2 раза - время в 2 раза увел)
+        public static object interpol_met(int[] m, int key)
         {
             object result = "не найдено";
             int low = 0;
@@ -36,7 +36,7 @@ namespace Part1_Task1
 
             while (m[low] <= key && m[high] >= key && low < high)
             {
-                int middle = low + ((key - m[low]) * (high - low)) / (m[high] - m[low]); //ф-ла нахож предположительная позиция элемента
+                int middle = low + ((key - m[low]) * (high - low)) / (m[high] - m[low]);
                 if (m[middle] < key)
                     low = middle + 1;
                 else if (m[middle] > key)
@@ -49,7 +49,7 @@ namespace Part1_Task1
             return result;
         }
 
-        public static object binar_met(int[] m, int key) // Бинарный ( О(1), О(Logn), О(logn), память О(1)) //Мгновенно не завися от размера, либо медленно (увел массив в 1000 раз -время увел в 10 раз)
+        public static object binar_met(int[] m, int key)
         {
             object ress = "не найден";
             int high = m.Length - 1, low = 0;
