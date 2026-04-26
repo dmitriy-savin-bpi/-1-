@@ -6,7 +6,7 @@ namespace Part1_Task2
 {
     class Program
     {
-        static string exam_1(string mesg) //метод для ввода строки
+        static string exam_1(string mesg)
         {
             Console.WriteLine(mesg);
             bool flag = false;
@@ -31,8 +31,8 @@ namespace Part1_Task2
 
         static int[] Prefix_f(string words)
         {
-            int n = words.Length; //длина строки
-            int[] p = new int[n]; //массив для пре-ф-ии
+            int n = words.Length;
+            int[] p = new int[n];
 
             for (int i = 1; i < n; i++)
             {
@@ -40,7 +40,7 @@ namespace Part1_Task2
 
                 while (j > 0 && words[i] != words[j])
                 {
-                    j = p[j - 1]; //откат на пред знач
+                    j = p[j - 1];
                 }
 
                 if (words[i] == words[j])
@@ -48,18 +48,18 @@ namespace Part1_Task2
                     j++;
                 }
 
-                p[i] = j; //запом позицию
+                p[i] = j;
             }
             return p;
         }
 
-        static object Knut_Mor_Prat(string words, string word) //Кнут-Моррис-Пратт ( О(n+m)) // Алгоритм пробегается по всем сиволам текста и символам слова
+        static object Knut_Mor_Prat(string words, string word)
         {
             int[] p = Prefix_f(words);
             int j = 0;
-            object ress = "НЕ НАЙДЕН"; //рез по умол
+            object ress = "НЕ НАЙДЕН";
 
-            for (int i = 0; i < words.Length; i++) //проход по всем символам текста
+            for (int i = 0; i < words.Length; i++)
             {
                 while (j > 0 && words[i] != word[j])
                     j = p[j - 1];
@@ -67,13 +67,13 @@ namespace Part1_Task2
                 if (words[i] == word[j])
                     j++;
 
-                if (j == word.Length) //всё слово
+                if (j == word.Length)
                 {
-                    ress = i - word.Length + 1; //выч позицию начала вхождения
+                    ress = i - word.Length + 1;
                     return ress;
                 }
 
-                string wd = "_"; //строка для вывода совп букв
+                string wd = "_";
                 int dlin = i;
 
                 if (j > 0)
@@ -83,10 +83,10 @@ namespace Part1_Task2
 
                 if (j > 1)
                 {
-                    dlin -= j - 1; //коррекц позицию вывода
+                    dlin -= j - 1;
                 }
 
-                for (int u = 0; u < j; u++) // формир строку из совпавших букв
+                for (int u = 0; u < j; u++)
                 {
                     wd += word[u];
                 }
@@ -97,32 +97,32 @@ namespace Part1_Task2
             return ress;
         }
 
-        static object Boyer_M(string words, string word) //Бойер-Мур ( O(n/m), // Чем длинее слово, тем меньше проверок нужно
+        static object Boyer_M(string words, string word)
         {
             object ress_1 = "не найдено";
-            Dictionary<char, int> last_vhog = new Dictionary<char, int>(); //словарь для хран ласт вхождений букв
+            Dictionary<char, int> last_vhog = new Dictionary<char, int>();
 
-            for (int i = 0; i < word.Length; i++) //запомн кажд букву её ласт позиции в образе
+            for (int i = 0; i < word.Length; i++)
             {
                 last_vhog[word[i]] = i;
             }
 
-            Console.WriteLine(words); //текст
-            Console.WriteLine(word); //образец
+            Console.WriteLine(words);
+            Console.WriteLine(word);
 
-            for (int i = 0; i <= words.Length - word.Length;) //проход по тексту с шагом, который вычисляем
+            for (int i = 0; i <= words.Length - word.Length;)
             {
-                int j = word.Length - 1; //нач с ласт символа образца
-                while (j >= 0 && words[i + j] == word[j]) j--; //срав символы справа налево
+                int j = word.Length - 1;
+                while (j >= 0 && words[i + j] == word[j]) j--;
 
-                if (j < 0) //нашли всё слово
+                if (j < 0)
                 {
                     ress_1 = i;
                     return ress_1;
                 }
 
-                char no_char = words[i + j]; //символ на котором произошло несовпадение
-                int shift = last_vhog.ContainsKey(no_char) ? j - last_vhog[no_char] : j + 1; //если символ есть в тексте, свдвиг чтобы совпал //нету, сдвигаем на j+1
+                char no_char = words[i + j];
+                int shift = last_vhog.ContainsKey(no_char) ? j - last_vhog[no_char] : j + 1;
                 i += shift;
                 string pp = new string(' ', i) + word;
 
