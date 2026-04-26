@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Linq;
 
@@ -6,8 +6,7 @@ namespace Part2_Variant5
 {
     class Program
     {
-        // 1. Сортировка подсчётом (Counting Sort)
-        static int[] CountingSort(int[] array) // O(n+k), O(n+k), O(n+k), память О(k) // Зависит от размера массива и диапазона чисел
+        static int[] CountingSort(int[] array) 
         {
             if (array.Length <= 1) return array;
 
@@ -15,20 +14,20 @@ namespace Part2_Variant5
             int min = array.Min();
             int range = max - min + 1;
 
-            int[] count = new int[range]; //массив-счётчик
-            int[] output = new int[array.Length]; //массив для результата
+            int[] count = new int[range];
+            int[] output = new int[array.Length];
 
-            for (int i = 0; i < array.Length; i++) //раз встр
+            for (int i = 0; i < array.Length; i++)
             {
-                count[array[i] - min]++; //увел счётчик
+                count[array[i] - min]++;
             }
 
             for (int i = 1; i < count.Length; i++)
             {
-                count[i] += count[i - 1]; //каж эл сумм пред
+                count[i] += count[i - 1];
             }
 
-            for (int i = array.Length - 1; i >= 0; i--) //форм отсор массив
+            for (int i = array.Length - 1; i >= 0; i--)
             {
                 output[count[array[i] - min] - 1] = array[i];
                 count[array[i] - min]--;
@@ -37,17 +36,16 @@ namespace Part2_Variant5
             return output;
         }
 
-        // 2. Сортировка пузырьком (Bubble Sort) // O(n), O(n'2), O(n'2), память О(1) //линейно (увел массив в 2 раза - время выросло в 2 раза, либо растёт быстро (увеличили массив в 10 раз - время выросло в 100 раз)
         static int[] BubbleSort(int[] arr)
         {
             int[] result = (int[])arr.Clone();
-            int n = result.Length; //запом длину
+            int n = result.Length;
 
             for (int i = 0; i < n - 1; i++)
             {
                 for (int j = 0; j < n - i - 1; j++)
                 {
-                    if (result[j] > result[j + 1]) //пред бол след = меняем 
+                    if (result[j] > result[j + 1])
                     {
                         int temp = result[j];
                         result[j] = result[j + 1];
@@ -58,7 +56,6 @@ namespace Part2_Variant5
             return result;
         }
 
-        // 3. Пирамидальная сортировка (HeapSort) // O(nlogn), O(nlogn), O(nlogn), память О(1) // быстрее линейного, но медленее квадратичного
         static int[] HeapSort(int[] arr)
         {
             int[] result = (int[])arr.Clone();
@@ -69,7 +66,7 @@ namespace Part2_Variant5
                 Heapify(result, n, i);
             }
 
-            for (int i = n - 1; i > 0; i--) //извл эл из кучи
+            for (int i = n - 1; i > 0; i--)
             {
                 int temp = result[0];
                 result[0] = result[i];
@@ -80,11 +77,11 @@ namespace Part2_Variant5
             return result;
         }
 
-        static void Heapify(int[] arr, int n, int i) //метод восст кучи
+        static void Heapify(int[] arr, int n, int i)
         {
             int largest = i;
-            int left = 2 * i + 1; //лев потомок
-            int right = 2 * i + 2; //прав потомок
+            int left = 2 * i + 1;
+            int right = 2 * i + 2;
 
             if (left < n && arr[left] > arr[largest])
                 largest = left;
@@ -92,7 +89,7 @@ namespace Part2_Variant5
             if (right < n && arr[right] > arr[largest])
                 largest = right;
 
-            if (largest != i) //если наиб эл - не корень
+            if (largest != i)
             {
                 int swap = arr[i];
                 arr[i] = arr[largest];
@@ -102,7 +99,7 @@ namespace Part2_Variant5
             }
         }
 
-        static int get_value(string message) //метод полож числа
+        static int get_value(string message)
         {
             int number = -1;
             bool flag = false;
@@ -163,14 +160,12 @@ namespace Part2_Variant5
 
             Stopwatch stpwatch = new Stopwatch();
 
-            // Counting Sort
             stpwatch.Start();
             int[] counting_result = CountingSort(counting_m);
             stpwatch.Stop();
             Console.WriteLine("\nрезультат CountingSort (первые 20): " + string.Join(", ", counting_result.Take(20)));
             Console.WriteLine("Время работы сортировки подсчётом: " + stpwatch.Elapsed.TotalMilliseconds.ToString() + " мс");
 
-            // Bubble Sort
             stpwatch.Reset();
             stpwatch.Start();
             int[] bubble_result = BubbleSort(bubble_m);
@@ -178,7 +173,6 @@ namespace Part2_Variant5
             Console.WriteLine("результат BubbleSort (первые 20): " + string.Join(", ", bubble_result.Take(20)));
             Console.WriteLine("Время работы сортировки пузырьком: " + stpwatch.Elapsed.TotalMilliseconds.ToString() + " мс");
 
-            // Heap Sort
             stpwatch.Reset();
             stpwatch.Start();
             int[] heap_result = HeapSort(heap_m);
